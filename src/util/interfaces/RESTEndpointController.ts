@@ -1,66 +1,62 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import IdParamRequest from './requests/IdParamRequest';
+import Resource from './Resource';
 import IdResponse from './responses/IdResponse';
+import Service from './Service';
 
 export default interface RESTEndpointController {
   path: string;
   router: Router;
-
-  // TODO: create interface types for whatever data we'll be working with
+  service: Service;
   
   /* 
-   * Inserts a new item into the DB
-   * @param  {Request} req   
-   *                                          values the row content
+   * Inserts a new resource into the DB
    * 
-   * @return {Response<IdResponse>}    queryResult     results object or null if no rows affected
+   * @return {Response<IdResponse>} result Contains id of newly created item
    */
 
   create(
-    req: Request<{}, {}>,
+    req: Request<{}, IdResponse, Resource>,
     res: Response<IdResponse>,
     next: NextFunction): Promise<Response | void>;
 
   /* 
    * Retrieves all resources of a given type
    *
-   * @return {Response<ResourceType[]>}    queryResult   database rows returned by query
+   * @return {Response<Resource[]>} result List of items returned by query
    */
 
   getAll(
     req: Request,
-    res: Response<[]>,
+    res: Response<Resource[]>,
     next: NextFunction): Promise<Response | void>;
 
   /* 
    * Retrieve a single resource by Id
-   * @param  {number}         objectId     Used to identify the desired DB resource
    * 
-   * @return {Response<ResourceType>}    queryResult  The record retrieved from the DB if found
+   * @return {Response<Resource>} result The record retrieved from the DB if found
    */
 
   getOne(
     req: Request<IdParamRequest>,
-    res: Response<{}>,
+    res: Response<Resource>,
     next: NextFunction): Promise<Response | void>;
 
   /*
    * Edit a single resource by Id
-   * @param  {number}         objectId     Used to identify the desired DB resource
    * 
-   * @return {Response<IdResponse>}    queryResult  results object or null if no rows affected
+   * @return {Response<IdResponse>} result Contains id of the edited resource
    */
 
   update(
-    req: Request<IdParamRequest, {}>,
+    req: Request<IdParamRequest, IdResponse, Resource>,
     res: Response<IdResponse>,
     next: NextFunction): Promise<Response | void>;
 
   /*
    * Delete the resource with a specified Id
-   * @param  {number}         objectId     Used to identify the desired DB resource
    * 
-   * @return {Response<{}>}    queryResult  results object or null if no rows affected
+   * @return {Response<{}>} result Empty object on successful delete
    */
   delete(
     req: Request<IdParamRequest>,

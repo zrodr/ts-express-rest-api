@@ -5,6 +5,8 @@ export default class RESTEndpointError extends Error {
   constructor(message: string, httpResponseCode: number) {
     super(message);
     this.httpResponseCode = httpResponseCode;
+
+    Object.setPrototypeOf(this, RESTEndpointError.prototype);
     this.name = 'RESTEndpointError';
   }
 }

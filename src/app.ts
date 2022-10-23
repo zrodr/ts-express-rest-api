@@ -14,8 +14,8 @@ class JSONAPIApplication {
 
   constructor(controllers: RESTEndpointController[], env: Env, dbHandler: DBHandler) {
     this.app = express();
-    this.controllers = controllers;
     this.env = env;
+    this.controllers = controllers;
     this.dbHandler = dbHandler;
 
     this.initDatabaseConnection();
