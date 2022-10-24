@@ -14,8 +14,7 @@ export default class MongoDBHandler implements DBHandler {
 
     const { uri } = credentials;
 
-    mongoose.connect(uri)
-    .catch((e) => {
+    mongoose.connect(uri).catch((e) => {
       console.log(e);
       process.exit(1);
     });
@@ -23,8 +22,12 @@ export default class MongoDBHandler implements DBHandler {
     this.hasInitialized = true;
     this.connection = mongoose.connection;
 
-    this.connection.once('open', () => { console.log('connected to mongodb'); });
-    this.connection.once('error', () => { mongoose.disconnect(); });
+    this.connection.once('open', () => {
+      console.log('connected to mongodb');
+    });
+    this.connection.once('error', () => {
+      mongoose.disconnect();
+    });
 
     // ensure that we clean up the connection when we kill the process
     process.on('SIGINT', () => {

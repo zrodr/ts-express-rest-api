@@ -9,14 +9,18 @@ import { routeError, routeNotFound } from './middleware/errorhandlers';
 class JSONAPIApplication {
   app: Application;
   env: Env;
-  controllers: RESTEndpointController[];
   dbHandler: DBHandler;
+  controllers: RESTEndpointController[];
 
-  constructor(controllers: RESTEndpointController[], env: Env, dbHandler: DBHandler) {
+  constructor(
+    env: Env,
+    dbHandler: DBHandler,
+    controllers: RESTEndpointController[]
+  ) {
     this.app = express();
     this.env = env;
-    this.controllers = controllers;
     this.dbHandler = dbHandler;
+    this.controllers = controllers;
 
     this.initDatabaseConnection();
     this.mountGlobalMiddleware();
@@ -47,7 +51,7 @@ class JSONAPIApplication {
   private mountGlobalErrorHandler() {
     // for errors thrown from routes
     this.app.use(routeError);
-    // for routes that are not supported 
+    // for routes that are not supported
     this.app.use(routeNotFound);
   }
 

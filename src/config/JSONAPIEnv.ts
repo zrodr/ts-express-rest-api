@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
-import Env from "../util/interfaces/Env";
-
+import Env from '../util/interfaces/Env';
 
 export default class JSONAPIEnv implements Env {
   NODE_ENV: string;
@@ -32,14 +31,18 @@ export default class JSONAPIEnv implements Env {
       this['MONGO_PROD_URI'] = process.env.MONGO_PROD_URI;
       this['MONGO_DEV_URI'] = process.env.MONGO_DEV_URI;
 
-      console.log(`Running application in ${this.NODE_ENV} mode on port ${this.PORT}.`);
+      console.log(
+        `Running application in ${this.NODE_ENV} mode on port ${this.PORT}.`
+      );
     } catch (e) {
       console.log(e);
       process.exit(1);
     }
   }
 
-  public getVariable(name: 'NODE_ENV' | 'PORT' | 'MONGO_PROD_URI' | 'MONGO_DEV_URI') {
+  public getVariable(
+    name: 'NODE_ENV' | 'PORT' | 'MONGO_PROD_URI' | 'MONGO_DEV_URI'
+  ) {
     return this[name] ? this[name] : '';
   }
 

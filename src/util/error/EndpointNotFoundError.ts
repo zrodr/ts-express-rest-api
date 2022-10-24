@@ -1,4 +1,4 @@
-import RESTEndpointError from "./RESTEndpointError";
+import RESTEndpointError from './RESTEndpointError';
 
 export default class EndpointNotFoundError extends RESTEndpointError {
   constructor(route: string) {
