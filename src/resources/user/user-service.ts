@@ -2,6 +2,7 @@ import RESTEndpointError from '../../util/error/RESTEndpointError';
 import Service from 'util/interfaces/Service';
 import User from './User';
 import UserModel from './user-model';
+import ResourceNotFoundError from '../../util/error/ResourceNotFoundError';
 
 export default class UserService implements Service {
   private userModel;
@@ -41,9 +42,7 @@ export default class UserService implements Service {
     try {
       const result = await this.userModel.findOne({ _id: id });
 
-      if (!result) {
-        throw new RESTEndpointError(`User with id ${id} does not exist!`, 404);
-      }
+      if (!result) throw new ResourceNotFoundError('user', id);
 
       return result;
     } catch (e: any) {
@@ -64,11 +63,7 @@ export default class UserService implements Service {
         { returnOriginal: false }
       );
 
-      if (!result)
-        throw new RESTEndpointError(
-          `User with id '${id}' does not exist!`,
-          404
-        );
+      if (!result) throw new ResourceNotFoundError('user', id);
 
       return result;
     } catch (e: any) {
@@ -85,11 +80,7 @@ export default class UserService implements Service {
     try {
       const result = await this.userModel.findOneAndDelete({ _id: id });
 
-      if (!result)
-        throw new RESTEndpointError(
-          `User with id '${id}' does not exist!`,
-          404
-        );
+      if (!result) throw new ResourceNotFoundError('user', id);
     } catch (e: any) {
       if (e instanceof RESTEndpointError) throw e;
 

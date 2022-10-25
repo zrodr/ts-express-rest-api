@@ -4,8 +4,11 @@ import RESTEndpointController from '../../util/interfaces/RESTEndpointController
 import IdParamRequest from '../../util/interfaces/requests/IdParamRequest';
 import IdResponse from '../../util/interfaces/responses/IdResponse';
 
+import bodyValidator from '../../middleware/bodyvalidator';
+
 import User from './User';
 import UserService from './user-service';
+import userSchemaValidator from './user-validation';
 
 export default class UserController implements RESTEndpointController {
   path: string;
@@ -19,12 +22,15 @@ export default class UserController implements RESTEndpointController {
 
     // TODO: add middleware to validate request body for create/update, so the service
     // can just focus on working with data we know is valid.
-    this.router.route(this.path).post(this.create).get(this.getAll);
+    this.router
+      .route(this.path)
+      .post(bodyValidator(userSchemaValidator), this.create)
+      .get(this.getAll);
 
     this.router
       .route(`${this.path}/:resourceId`)
       .get(this.getOne)
-      .put(this.update)
+      .put(bodyValidator(userSchemaValidator), this.update)
       .delete(this.delete);
   }
 
